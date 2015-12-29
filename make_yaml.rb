@@ -1,9 +1,8 @@
 require 'json'
-fmh = 0
-myc = 0
-b = []
+require 'yaml'
 
 a = JSON.parse(File.read("./organizations-connector.json"))
+b = []
 
 a.each do |h|
   c = {
@@ -19,21 +18,7 @@ a.each do |h|
   }
   
   b << c
-  
-  if h['url'].include? "followmyhealth"
-    fmh += 1
-    if h['transmit']
-      puts h
-    end
-  elsif h['url'].include? "mychart"
-    myc += 1
-  end
 end
 
-b = JSON.pretty_generate(b)
-
-File.write('organizations.json', b)
-
-puts "#{a.length} organizations"
-puts "#{fmh} fmh"
-puts "#{myc} mychart"
+b = b.to_yaml(line_width: -1)
+File.write('organizations.yml', b)
